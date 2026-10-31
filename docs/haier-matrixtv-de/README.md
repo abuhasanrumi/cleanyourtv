@@ -15,9 +15,11 @@ This branch is [CleanYourTV](https://github.com/Gathin23/cleanyourtv) plus one l
 
 ## What is different from upstream
 
-`launcher/app/src/main/java/com/gathin/tvhome/MainActivity.java`: the app picked under **Open on start** also opens
-when the screen comes back on. The remote's power button is a light sleep on this set, with no reboot, so upstream
-opens the app only after a full restart. This also applies when the TV slept on an HDMI input.
+A launcher switch, `open_on_start_on_wake`, off by default and set to `true` in this folder's `config.json`: the app
+picked under **Open on start** also opens when the screen comes back on. The remote's power button is a light sleep on
+this set, with no reboot, so without it the app opens only after a full restart. It also applies when the TV slept on
+an HDMI input. If YouTube's own "Who's watching" screen appears, that is YouTube: the last profile is highlighted, and
+one press of OK opens it.
 
 ## Install
 

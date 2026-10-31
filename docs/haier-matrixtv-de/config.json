@@ -38,5 +38,6 @@
     "com.telink.lt",
     "com.netflix.ninja"
   ],
-  "animations": false
+  "animations": false,
+  "open_on_start_on_wake": true
 }
