@@ -1,0 +1,36 @@
+# Haier MatrixTV DE (HR9676EUF, omonia), Google TV 14, firmware UKN2.241219.053. Based on examples/aqua-matrixtv-ee-50.
+# Undo: TV_HOST=<tv ip> tools/restore.sh docs/haier-matrixtv-de/debloat.txt com.google.android.apps.tv.launcherx
+# Kept on purpose: YouTube, voice assistant (katniss), Chromecast (mediashell), system updater, all user-installed apps.
+# Live TV here is com.mediatek.tv.oneworld.tvcenter; com.cltv.hybrid and com.cltv.mal are factory-disabled, leave them.
+
+# Haier content, IoT, cleaner, e-manual
+it.hon.service
+com.haier.apps
+com.haier.tvhousekeeper
+com.haier.emanual9603
+com.haier.oemtabprovider
+com.haier.launcher.haiermatrix
+
+# Telemetry, ACR, partner rows, retail demo, preloads
+com.google.android.feedback
+tv.anoki.acr.controller
+com.mediatek.tv.launcher.partner
+com.mediatek.tv.retaildemo
+com.google.android.play.games
+com.haier.overseastv.bluetoothspeaker
+com.google.android.marvin.talkback
+
+# Owner's choice: not used
+com.netflix.ninja
+com.amazon.amazonvideo.livingroom
+com.google.android.youtube.tvmusic
+com.mediatek.miracast
+com.google.android.apps.tv.dreamx
+
+# Owner's choice: user-installed apps not wanted (disabled, not uninstalled; uninstall from Settings if wanted)
+com.alphainventor.filemanager
+com.television.app
+com.yablio.sendfilestotv
+
+# Google TV home handover: setupwraith goes while launcherx still owns Home (its saved network was forgotten first)
+com.google.android.tungsten.setupwraith
