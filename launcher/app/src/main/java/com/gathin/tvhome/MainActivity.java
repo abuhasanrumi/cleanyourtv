@@ -282,6 +282,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             open(i);
         }
     };
+    private final BroadcastReceiver wakeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            openStartAppOnWake();
+        }
+    };
     /** hidden_apps as the adapter sees them (config.xml or a theme's config.json): a hidden app gets no card either. */
     private Set<String> hiddenApps = Collections.emptySet();
     /** library_excluded_apps: packages the App library catalogue never offers. */
@@ -907,6 +913,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         } else {
             registerReceiver(packageReceiver, packageFilter);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(wakeReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON), Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(wakeReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
+        }
 
         ConnectivityManager cm = getSystemService(ConnectivityManager.class);
         TvInputManager tim = (TvInputManager) getSystemService(TV_INPUT_SERVICE);
@@ -1310,6 +1321,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         cancelHoldOk();
         if (gameDay != null) gameDay.shutdown();
         unregisterReceiver(packageReceiver);
+        unregisterReceiver(wakeReceiver);
         wallpaperPlayer.close();
         ConnectivityManager cm = getSystemService(ConnectivityManager.class);
         TvInputManager tim = (TvInputManager) getSystemService(TV_INPUT_SERVICE);
@@ -3112,6 +3124,20 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (!prefs.edit().putInt(OpenOnStart.BOOT_KEY, boot).commit()) return false;
         Intent i = bootToLiveTv ? liveTvIntent() : OpenOnStart.intent(getPackageManager(), app);
         if (i == null) return false;
+        return openWhenReady(i);
+    }
+
+    /** The Open on start app also opens when the screen comes back on: the remote's power button is a light sleep
+     *  on many sets, with no boot for openLiveTvAfterBoot to catch. */
+    private void openStartAppOnWake() {
+        String app = openOnStartChoice ? getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE)
+                .getString(OpenOnStart.KEY, "") : "";
+        if (app.isEmpty() || app.equals(getPackageName())) return;
+        Intent i = OpenOnStart.intent(getPackageManager(), app);
+        if (i != null) openWhenReady(i);
+    }
+
+    private boolean openWhenReady(Intent i) {
         // open_on_start_network_wait: Home stays on screen until the network is back or the wait is over.
         if (openOnStartWaitMs > 0 && !OpenOnStart.online(this)) {
             startPending = i;
