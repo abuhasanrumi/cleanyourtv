@@ -27,7 +27,7 @@ From the repo root, with the TV's IP in `TV_HOST` and network ADB on:
 
 ```bash
 tools/disable.sh docs/haier-matrixtv-de/debloat.txt
-HOME_KEY_SERVICE=1 launcher/build-and-install.sh
+launcher/build-and-install.sh
 tools/theme.sh docs/haier-matrixtv-de
 ```
 
@@ -38,10 +38,14 @@ only if you accept the cost: with animations on, 49% of frames were late moving 
 
 ## Gear button and volume
 
-The remote's gear sends `KEYCODE_NOTIFICATION` (83), a global key that goes only to the disabled stock home. The
-`config.json` here sets `settings_key_keycodes` to `[83]` and `consume_volume_keys` to `true`, and the launcher is
-installed with `HOME_KEY_SERVICE=1`. With that the gear opens Settings and a held volume button still ramps, tested
-with the real remote.
+The remote's gear sends `KEYCODE_NOTIFICATION` (83), a global key that goes only to the disabled stock home, so it does
+nothing here and Settings opens from the top bar on Home. This set runs without a key helper, so a held volume button
+ramps.
+
+The gear can be brought back: `settings_key_keycodes` `[83]`, `consume_volume_keys` `true` and `HOME_KEY_SERVICE=1` made
+it open Settings with the ramp intact, tested with the real remote. But the owner found the TV felt laggy with the
+helper on and better once it was switched off under Settings, System, Accessibility, so it stays off. That was how it
+felt, not a measurement, and the first check came right after a restart.
 
 ## Quirks on this firmware
 
