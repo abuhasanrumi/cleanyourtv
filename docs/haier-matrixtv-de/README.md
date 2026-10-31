@@ -27,7 +27,7 @@ From the repo root, with the TV's IP in `TV_HOST` and network ADB on:
 
 ```bash
 tools/disable.sh docs/haier-matrixtv-de/debloat.txt
-launcher/build-and-install.sh
+HOME_KEY_SERVICE=1 launcher/build-and-install.sh
 tools/theme.sh docs/haier-matrixtv-de
 ```
 
@@ -35,6 +35,13 @@ Then hold OK on **Settings** on Home, choose **Launcher settings → Open on sta
 
 `config.json` is the owner's: edit `dock_apps` and `hidden_apps` for your own apps. Set `animations` back to `true`
 only if you accept the cost: with animations on, 49% of frames were late moving along the dock; with them off, none.
+
+## Gear button and volume
+
+The remote's gear sends `KEYCODE_NOTIFICATION` (83), a global key that goes only to the disabled stock home. The
+`config.json` here sets `settings_key_keycodes` to `[83]` and `consume_volume_keys` to `true`, and the launcher is
+installed with `HOME_KEY_SERVICE=1`. With that the gear opens Settings and a held volume button still ramps, tested
+with the real remote.
 
 ## Quirks on this firmware
 

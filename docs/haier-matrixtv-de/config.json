@@ -39,5 +39,9 @@
     "com.netflix.ninja"
   ],
   "animations": false,
-  "open_on_start_on_wake": true
+  "open_on_start_on_wake": true,
+  "settings_key_keycodes": [
+    83
+  ],
+  "consume_volume_keys": true
 }
